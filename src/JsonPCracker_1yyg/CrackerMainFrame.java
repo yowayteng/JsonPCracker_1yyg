@@ -20,6 +20,8 @@ import java.awt.event.MouseEvent;
 import java.awt.GridLayout;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 
 public class CrackerMainFrame extends JFrame {
@@ -29,12 +31,8 @@ public class CrackerMainFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = 3758518016242710046L;
 	private JPanel contentPane;
-	private JTextField textField;
-	private Browser browser;
-	private BrowserView view;
-	private Web_LoadListener browser_LoadListener;
-	private Web_ScriptContextListener browser_ScriptContextListener;
-	private Web_StatusListener browser_StatusListener;
+	private JTextField textField; 
+
 	/**
 	 * Launch the application.
 	 */
@@ -51,6 +49,8 @@ public class CrackerMainFrame extends JFrame {
 		});
 	}
 
+	final int BROWSER_COUNT = 10;
+	private Browser[] browser;
 	/**
 	 * Create the frame.
 	 */
@@ -59,20 +59,34 @@ public class CrackerMainFrame extends JFrame {
 		iswebload = false;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1200, 500);
+		setBounds(100, 100, 1500, 900);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);		 
-
+		GridBagLayout layout = new GridBagLayout();
+		contentPane.setLayout(layout);
 		
-		browser = new Browser();
-		view = new BrowserView(browser);
-		JPanel showpanel = new JPanel();
-		showpanel.setLayout(new BorderLayout());
-		view.setBorder(new LineBorder(new Color(0, 0, 0)));
-		showpanel.add(view,BorderLayout.CENTER);
-		
+		JPanel ContentBrowserPanel = new JPanel();
+		ContentBrowserPanel.setLayout(new GridLayout(5,2));
+		browser = new Browser[BROWSER_COUNT];
+		JPanel[] showpanel = new JPanel[BROWSER_COUNT];
+		int BROWSER_ID = 0;
+		for(JPanel showpanel_item : showpanel)
+		{		
+			showpanel_item = new JPanel();	
+			browser[BROWSER_ID] = new Browser();
+			BrowserView view= new BrowserView(browser[BROWSER_ID]);
+			Web_LoadListener browser_LoadListener = new Web_LoadListener(BROWSER_ID,BROWSER_COUNT);
+			browser[BROWSER_ID].addLoadListener(browser_LoadListener);
+			showpanel_item.setLayout(new BorderLayout());
+			view.setBorder(new LineBorder(new Color(0, 0, 0)));
+			showpanel_item.add(view,BorderLayout.CENTER);
+			ContentBrowserPanel.add(showpanel_item);
+			BROWSER_ID++;
+		}	
+		contentPane.add(ContentBrowserPanel);
+			
 		JPanel toolspanel = new JPanel();
 		toolspanel.setLayout(new BorderLayout(0, 0));
 		JPanel nevgatepanel = new JPanel();		
@@ -92,24 +106,29 @@ public class CrackerMainFrame extends JFrame {
 				Load_A_NewWeb(url);
 			}
 		});
-		nevgatepanel.add(StartButton);
+		nevgatepanel.add(StartButton);		
+		contentPane.add(toolspanel);	
 		
-		contentPane.setLayout(new GridLayout(2, 0, 0, 0));
-		contentPane.add(showpanel);
-		contentPane.add(toolspanel);
-		
-		browser_LoadListener = new Web_LoadListener();
-		browser.addLoadListener(browser_LoadListener);
-		browser_ScriptContextListener = new Web_ScriptContextListener();
-		browser.addScriptContextListener(browser_ScriptContextListener);
-		browser_StatusListener = new Web_StatusListener();
-		browser.addStatusListener(browser_StatusListener);
+		GridBagConstraints s= new GridBagConstraints();
+		s.fill = GridBagConstraints.BOTH;
+		s.gridwidth=0;
+		s.weightx = 1;
+		s.weighty=1;
+		layout.setConstraints(ContentBrowserPanel, s);
+		s.gridwidth=0;
+		s.weightx = 0;
+		s.weighty=0;
+		layout.setConstraints(toolspanel, s);
 	}
 	 
 	Boolean Load_A_NewWeb(String url)
 	{
 		setIswebload(false);
-		browser.loadURL(url);	
+		//0~9号线程，每回加10
+		for(int BROWSER_ID = 0;BROWSER_ID < BROWSER_COUNT;BROWSER_ID++)
+		{
+			browser[BROWSER_ID].loadURL(url);
+		}
 		return true;
 	}
 	
