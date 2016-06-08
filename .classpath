@@ -22,11 +22,6 @@
 	<classpathentry kind="lib" path="E:/WorkSpace/JsonPCracker_1yyg_ForJava/lib/jxbrowser-mac-6.4.jar"/>
 	<classpathentry kind="lib" path="E:/WorkSpace/JsonPCracker_1yyg_ForJava/lib/jxbrowser-win-6.4.jar"/>
 	<classpathentry kind="lib" path="E:/WorkSpace/JsonPCracker_1yyg_ForJava/lib/license.jar"/>
-	<classpathentry kind="lib" path="E:/WorkSpace/JsonPCracker_1yyg_ForJava/lib/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="E:/WorkSpace/JsonPCracker_1yyg_ForJava/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="E:/WorkSpace/JsonPCracker_1yyg_ForJava/lib/hsqldb.jar"/>
-	<classpathentry kind="lib" path="E:/WorkSpace/JsonPCracker_1yyg_ForJava/lib/ucanaccess-3.0.5.jar"/>
-	<classpathentry kind="lib" path="E:/WorkSpace/JsonPCracker_1yyg_ForJava/lib/ucanload.jar"/>
-	<classpathentry kind="lib" path="E:/WorkSpace/JsonPCracker_1yyg_ForJava/lib/jackcess-2.1.3.jar"/>
+	<classpathentry kind="lib" path="E:/WorkSpace/JsonPCracker_1yyg_ForJava/lib/mysql-connector-java-5.1.39-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
